@@ -11,7 +11,7 @@ The idea was to apply the in-game HUD to RL, as it turned out BotW's HUD element
 
 - Display battery state as hearts (with support for quarter hearts, just as in-game).
 - Display week day and date. Even though there is nothing comparable in BotW's HUD, I need this data displayed.
-- Display time (duh) just like in-game, but bigger and betterer (for readability).
+- Display time (duh) just like in-game, but bigger and betterer (for readability), now with a 12hr clock.
 - Display current steps.
 - Display if Watchy wearer's life runs in Master Mode by showing a Triforce in the lower left corner. As my life does so by default, that thing is just drawn no matter what.
 - Display the weather as icons in a weather bar thingy, just like in-game (with the exception of an added icon for 'partly cloudy', as the game's icons were a bit vague on that for my taste). All weather data (including the one for the upcoming days) is requested from [openweathermap.org's one call API](https://openweathermap.org/api/one-call-api).  
