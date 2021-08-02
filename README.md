@@ -1,6 +1,6 @@
-# BotWatchy
+# BotWatchy-Fahrenheit
 
-![alt text](watchface.gif "This is what you will get")
+![alt text](https://user-images.githubusercontent.com/20036947/127816025-c63c94c2-7e1c-409f-89cb-bbc5ba40a87a.png "This is what you will get")
 
 This is a watch face for the open E-Ink display smartwatch [Watchy](https://watchy.sqfmi.com/).  
 It is inspired by the HUD of 'The Legend of Zelda - Breath of the Wild' (BotW). The name is derived from the game's title and has nothing to do with any kind of bot. Rather, it's short for 'Breath of the Watchy'.
@@ -12,16 +12,17 @@ The idea was to apply the in-game HUD to RL, as it turned out BotW's HUD element
 - Display battery state as hearts (with support for quarter hearts, just as in-game).
 - Display week day and date. Even though there is nothing comparable in BotW's HUD, I need this data displayed.
 - Display time (duh) just like in-game, but bigger and betterer (for readability).
+- Display current steps.
 - Display if Watchy wearer's life runs in Master Mode by showing a Triforce in the lower left corner. As my life does so by default, that thing is just drawn no matter what.
 - Display the weather as icons in a weather bar thingy, just like in-game (with the exception of an added icon for 'partly cloudy', as the game's icons were a bit vague on that for my taste). All weather data (including the one for the upcoming days) is requested from [openweathermap.org's one call API](https://openweathermap.org/api/one-call-api).  
 If there's no WiFi to get weather data from, the Watch Face will just keep on displaying the data it got the last time.
   - Current weather is shown as the first icon.
   - Tomorrow's weather is shown as the second icon.
   - Day after tomorrow's weather is shown as the third icon.
-- Display temperature in a temperature indicator just as in-game. Temperature is always displayed in Degrees Celcius. I'll leave implementing Fahrenheit to you, if you're into freaky stuff like that.  
-Displayed temperature range is constrained between -12°C and 32°C.  
-'Cold' zone begins at 0°C, 'hot' zone at 20°C. If your Watchy shows that the temperature is in those zones, make sure to switch into the right gear or boost your temperature resistance by consuming the appropriate food or medicine.  
-With no WiFi, the temperature gotten from the last API call is displayed until there's a connection again. Default was to show the RTC temperature sensor's data, which only made sense for me if it's about 30°C outside.
+- Display temperature in a temperature indicator just as in-game. Temperature is always displayed in Degrees Fahrenheit.
+Displayed temperature range is constrained between 10.4°F and 100.4°F.  
+'Cold' zone begins at 40°F, 'hot' zone at 70°F. If your Watchy shows that the temperature is in those zones, make sure to switch into the right gear or boost your temperature resistance by consuming the appropriate food or medicine.  
+With no WiFi, the temperature gotten from the last API call is displayed until there's a connection again. Default was to show the RTC temperature sensor's data, which only made sense for me if it's about 86°F outside.
 - Display WiFi connectivity state using the Sheika sensor symbol. There's just 'on' or 'off'.
 
 ## Upload instructions
@@ -45,6 +46,10 @@ I commented out the code related to the 'Array of all bitmaps for convenience' i
 The UI font's original files are not included. See [here](https://www.reddit.com/r/zelda/comments/5txuba/breath_of_the_wild_ui_font/) for source. I let some online tool convert it to .ttf and then used [truetype2gfx](https://rop.nl/truetype2gfx/) to convert to C code.
 
 ## Thanks and contributions
+
+### Original BotWatchy by mehtmehtsen
+
+I forked his project and added onto it and made some small changes. I really appreciate his work creating the original!
 
 ### Zelda BOTW UI Kit by Hunter Paramore
 
