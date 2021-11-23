@@ -28,6 +28,9 @@ public:
   void drawBattery();
   void drawWifi();
 
+  const char* Ordinal(uint8_t num);
+  const unsigned char* HeartBitmap(int amount);
+
   weatherDataOneCall getWeatherData();
 };
 
