@@ -1,25 +1,41 @@
 #include "BotWatchy.h"
 
 const int posHeart0X = 10;
-const int posHeart0Y = 10;
+const int posHeartY = 10;
+
 const int posHeart1X = 40;
-const int posHeart1Y = 10;
+
 const int posHeart2X = 69;
-const int posHeart2Y = 10;
+
+const int posTimeX = 12;
+const int posTimeY = 135;
+
+const int posAMPMTimeX = 122;
+
+const int posDateX = 12;
+const int posDate1Y = 71;
+
+const int posDate2Y = 90;
+
 const int posTemperatureX = 138;
 const int posTemperatureY = 68;
+
 const int posTriforceX = 8;
 const int posTriforceY = 163;
+
 const int posWeatherBaseX = 40;
 const int posWeatherBaseY = 151;
+
 const int posWeather0X = 55;
-const int posWeather0Y = 158;
+const int posWeatherY = 158;
+
 const int posWeather1X = 103;
-const int posWeather1Y = 158;
+
 const int posWeather2X = 151;
-const int posWeather2Y = 158;
+
 const int posWifiX = 138;
 const int posWifiY = 10;
+
 const int posStepsX = 10;
 const int posStepsY = 37;
 
@@ -55,18 +71,31 @@ void BotWatchy::drawWatchFace()
 void BotWatchy::drawTime()
 {
   display.setFont(&Calamity_Bold18pt7b);
-  display.setCursor(12, 135);
+  display.setCursor(posTimeX, posTimeY);
+
+  bool am = currentTime.Hour < 12;
+  int hour = currentTime.Hour;
+
+  if (HOUR_12_24 == 12)
+    hour = ((hour+11)%12)+1;
   
-  if (currentTime.Hour < 10)
+  if (hour < 10)
     display.print("0");
 
-  display.print(currentTime.Hour);
+  display.print(hour);
   display.print(":");
 
   if (currentTime.Minute < 10)
     display.print("0");
 
   display.println(currentTime.Minute);
+
+  if (HOUR_12_24 != 12)
+    return;
+  
+  display.setFont(&Calamity_Bold8pt7b);
+  display.setCursor(posAMPMTimeX, posTimeY);
+  display.print(am ? "AM" : "PM");
 }
 
 const char* BotWatchy::Ordinal(uint8_t num)
@@ -99,10 +128,10 @@ void BotWatchy::drawDate()
   String dayOfWeek = dayStr(currentTime.Wday);
   String month = monthStr(currentTime.Month);
 
-  display.setCursor(12, 71);
+  display.setCursor(posDateX, posDate1Y);
   display.println(dayOfWeek);
 
-  display.setCursor(12, 90);
+  display.setCursor(posDateX, posDate2Y);
   display.print(month);
   display.print(" ");
 
@@ -130,13 +159,9 @@ void BotWatchy::drawBattery()
   if (batState < 0)
     batState = 0;
 
-  // display.setCursor(10, 50);
-  // display.print(batState);
-
-  
-    display.drawBitmap(posHeart0X, posHeart0Y, HeartBitmap(batState), 27, 22, GxEPD_BLACK);
-    display.drawBitmap(posHeart1X, posHeart1Y, HeartBitmap(batState - 4), 27, 22, GxEPD_BLACK);
-    display.drawBitmap(posHeart2X, posHeart2Y, HeartBitmap(batState - 8), 27, 22, GxEPD_BLACK);
+  display.drawBitmap(posHeart0X, posHeartY, HeartBitmap(batState), 27, 22, GxEPD_BLACK);
+  display.drawBitmap(posHeart1X, posHeartY, HeartBitmap(batState - 4), 27, 22, GxEPD_BLACK);
+  display.drawBitmap(posHeart2X, posHeartY, HeartBitmap(batState - 8), 27, 22, GxEPD_BLACK);
 }
 
 const unsigned char* BotWatchy::HeartBitmap(int amount)
@@ -219,21 +244,21 @@ void BotWatchy::drawWeatherIcon(int8_t iconPosX, int16_t iconWeatherConditionCod
 
   //https://openweathermap.org/weather-conditions
   if (iconWeatherConditionCode > 801) //Cloudy
-    display.drawBitmap(iconPosPxX, posWeather0Y, epd_bitmap_weather_clouds, 27, 27, GxEPD_WHITE);
+    display.drawBitmap(iconPosPxX, posWeatherY, epd_bitmap_weather_clouds, 27, 27, GxEPD_WHITE);
   else if (iconWeatherConditionCode == 801) //Few Clouds
-    display.drawBitmap(iconPosPxX, posWeather0Y, epd_bitmap_weather_partlycloudy, 27, 27, GxEPD_WHITE);
+    display.drawBitmap(iconPosPxX, posWeatherY, epd_bitmap_weather_partlycloudy, 27, 27, GxEPD_WHITE);
   else if (iconWeatherConditionCode == 800) //Clear
-    display.drawBitmap(iconPosPxX, posWeather0Y, epd_bitmap_weather_sun, 27, 27, GxEPD_WHITE);
+    display.drawBitmap(iconPosPxX, posWeatherY, epd_bitmap_weather_sun, 27, 27, GxEPD_WHITE);
   else if (iconWeatherConditionCode >= 700) //Atmosphere
-    display.drawBitmap(iconPosPxX, posWeather0Y, epd_bitmap_weather_clouds, 27, 27, GxEPD_WHITE);
+    display.drawBitmap(iconPosPxX, posWeatherY, epd_bitmap_weather_clouds, 27, 27, GxEPD_WHITE);
   else if (iconWeatherConditionCode >= 600) //Snow
-    display.drawBitmap(iconPosPxX, posWeather0Y, epd_bitmap_weather_snow, 27, 27, GxEPD_WHITE);
+    display.drawBitmap(iconPosPxX, posWeatherY, epd_bitmap_weather_snow, 27, 27, GxEPD_WHITE);
   else if (iconWeatherConditionCode >= 500) //Rain
-    display.drawBitmap(iconPosPxX, posWeather0Y, epd_bitmap_weather_rain, 27, 27, GxEPD_WHITE);
+    display.drawBitmap(iconPosPxX, posWeatherY, epd_bitmap_weather_rain, 27, 27, GxEPD_WHITE);
   else if (iconWeatherConditionCode >= 300) //Drizzle
-    display.drawBitmap(iconPosPxX, posWeather0Y, epd_bitmap_weather_rain, 27, 27, GxEPD_WHITE);
+    display.drawBitmap(iconPosPxX, posWeatherY, epd_bitmap_weather_rain, 27, 27, GxEPD_WHITE);
   else if (iconWeatherConditionCode >= 200) //Thunderstorm
-    display.drawBitmap(iconPosPxX, posWeather0Y, epd_bitmap_weather_flash, 27, 27, GxEPD_WHITE);
+    display.drawBitmap(iconPosPxX, posWeatherY, epd_bitmap_weather_flash, 27, 27, GxEPD_WHITE);
   else
     return;
 }
