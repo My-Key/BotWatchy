@@ -92,7 +92,7 @@ void BotWatchy::drawTime()
 
   if (HOUR_12_24 != 12)
     return;
-  
+
   display.setFont(&Calamity_Bold8pt7b);
   display.setCursor(posAMPMTimeX, posTimeY);
   display.print(am ? "AM" : "PM");
@@ -197,10 +197,12 @@ void BotWatchy::drawWeather()
 
   // temperature
   int temperature = currentWeatherOneCall.temperature;
+  
+  bool metric = TEMP_UNIT == "metric";
 
   int l = 16;
-  int minTemp = -12;
-  int maxTemp = 38;
+  int minTemp = metric ? -12 : 10;
+  int maxTemp = metric ? 38 : 100;
 
   int scalingForMap = 10000;
   float threeQuarterPi = 4.7123;
@@ -208,10 +210,13 @@ void BotWatchy::drawWeather()
 
   int scaledAngle = map(temperature, minTemp, maxTemp, 0, scaledThreeQuarterPi);
   float angle = scaledAngle / float(scalingForMap);
+
   if (angle > threeQuarterPi)
     angle = threeQuarterPi;
+
   if (angle < 0)
     angle = 0;
+  
   angle += 2.3561;
 
   int startX = posTemperatureX + 25;
@@ -225,11 +230,29 @@ void BotWatchy::drawWeather()
   display.drawLine(startX + 1, startY, endX + 1, endY, GxEPD_WHITE);
   display.drawLine(startX, startY + 1, endX, endY + 1, GxEPD_WHITE);
 
+  display.drawBitmap(startX - 7, posTemperatureY + 34, metric ? epd_bitmap_celsius : epd_bitmap_farenheit, 14, 11, GxEPD_WHITE);
 
   display.setFont(&Calamity_Bold8pt7b);
-  display.setCursor(posTemperatureX + 10, posTemperatureY + 65);
+
+  if (!DRAW_TEMPERATURE)
+    return;
+
+  int16_t  x1, y1;
+  uint16_t w, h;
+  display.getTextBounds(String(temperature), 0, 0, &x1, &y1, &w, &h);
+
+  int xPos = 0;
+
+  if (HOUR_12_24 != 12)
+    xPos = posTemperatureX + 25 - w / 2 - 7;
+  else
+    xPos = 176 - w;
+
+  display.setCursor(xPos, posTemperatureY + 65);
+
   display.print(temperature);
-  display.println("*C");
+  
+  display.drawBitmap(xPos + w, posTemperatureY + 65 - 11, metric ? epd_bitmap_celsius : epd_bitmap_farenheit, 14, 11, GxEPD_BLACK);
 }
 
 void BotWatchy::drawWeatherIcon(int8_t iconPosX, int16_t iconWeatherConditionCode)
@@ -276,7 +299,7 @@ weatherDataOneCall BotWatchy::getWeatherData()
     { //Use Weather API for live data if WiFi is connected
       HTTPClient http;
       http.setConnectTimeout(3000); //3 second max timeout
-      String weatherQueryURL = String("https://api.openweathermap.org/data/2.5/onecall?lat=") + String(LAT) + String("&lon=") + String(LON) + String("&exclude=minutely,hourly,alerts&units=metric&appid=") + String(OWN_API_KEY);
+      String weatherQueryURL = String("https://api.openweathermap.org/data/2.5/onecall?lat=") + String(LAT) + String("&lon=") + String(LON) + String("&exclude=minutely,hourly,alerts&units=") + TEMP_UNIT + String("&appid=") + String(OWN_API_KEY);
       http.begin(weatherQueryURL.c_str());
       int httpResponseCode = http.GET();
       if (httpResponseCode == 200)

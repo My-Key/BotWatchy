@@ -7,6 +7,8 @@
 #include "../include/Calamity_Bold8pt7b.h"
 #include "../include/secrets.h"
 
+#define DRAW_TEMPERATURE true
+
 typedef struct weatherDataOneCall{
   boolean invalid;
   int8_t temperature;
