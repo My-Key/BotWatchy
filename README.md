@@ -1,4 +1,4 @@
-# BotWatchy-Fahrenheit
+# BotWatchy
 
 ![alt text](watchface.gif "This is what you will get")
 
