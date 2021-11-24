@@ -47,9 +47,9 @@ The UI font's original files are not included. See [here](https://www.reddit.com
 
 ## Thanks and contributions
 
-### Original BotWatchy by mehtmehtsen
+### Original BotWatchy by mehtmehtsen and BotWatchy-Fahrenheit by Kuuchuu
 
-I forked his project and added onto it and made some small changes. I really appreciate his work creating the original!
+I forked BotWatchy-Fahrenheit and added onto it and made some small changes. I really appreciate their work creating the original and Fahrenheit fork!
 
 ### Zelda BOTW UI Kit by Hunter Paramore
 
